@@ -1,0 +1,12 @@
+pipelines:
+  default:
+    - step:
+        services:
+          - docker
+        script: 
+          - export IMAGE_NAME=spy86/jboss-wildfly:$BITBUCKET_COMMIT
+          - docker build -t $IMAGE_NAME .
+          # authenticate with the Docker Hub registry
+          - docker login --username $DOCKER_HUB_USERNAME --password $DOCKER_HUB_PASSWORD
+          # push the new Docker image to the Docker registry
+          - docker push $IMAGE_NAME
